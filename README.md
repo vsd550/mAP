@@ -218,3 +218,7 @@ Calculating the total area, we have the AP:
 
 
 <!--In order to evaluate your detections, you just need a simple list of `Detection` objects. A `Detection` object is a very simple class containing the class id, class probability and bounding boxes coordinates of the detected objects. This same structure is used for the groundtruth detections.-->
+
+**Note again :** For the PASCAL VOC challenge, a prediction is positive if IoU > 0.5. However, if multiple detections of the same object are detected, it counts the first one as a positive while the rest as negatives
+
+### mAP (Mean Average Precision)
