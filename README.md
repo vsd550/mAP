@@ -221,4 +221,16 @@ Calculating the total area, we have the AP:
 
 **Note again :** For the PASCAL VOC challenge, a prediction is positive if IoU > 0.5. However, if multiple detections of the same object are detected, it counts the first one as a positive while the rest as negatives
 
+##### Summary
+The key here is to compute the AP for each class, **in general** for computing Precision (P) and Recall (R) you must define what are: True Positives (TP), False Positives (FP), True Negative (TN) and False Negative (FN). Note that these may be different for different challenges and datasets.     
+In the setting of Object Detection of the **Pascal VOC Challenge** are the following:       
+- TP: are the Bounding Boxes (BB) that the intersection over union (IoU) with the ground truth (GT) is above 0.5
+- FP: BB that the IoU with GT is below 0.5 also the BB that have IoU with a GT that has already been detected.
+- TN: there are not true negative, the image are expected to contain at least one object
+- FN: those images were the method failed to produce a BB           
+
+
 ### mAP (Mean Average Precision)
+**A generic definition:** In order to calculate Mean Average Precision or mAP score, we take the _mean AP over all classes_ **and/or** over all IoU thresholds, depending on the competition
+- VOC - PASCAL VOC2007 challenge only 1 IoU threshold of 0.5 was considered. So the mAP was averaged over all 20 object classes.
+- COCO - For the COCO 2017 challenge, the mAP was calculated by averaging the AP over all 80 object categories **AND** all 10 IoU thresholds i.e AP@[.5:.95] corresponds to the average AP for IoU from 0.5 to 0.95 with a step size of 0.05. So, First the AP is calculated for IoU threshold of 0.5 for each class i.e. We calculate the precision at every recall value(0 to 1 with a step size of 0.01), then it is repeated for IoU thresholds of 0.55,0.60,...,.95 and finally **average is taken over all the 80 classes and all the 10 thresholds** to get the metric used in the challenge.
