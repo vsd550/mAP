@@ -1,15 +1,3 @@
-<p align="left"> 
-<img src="https://zenodo.org/badge/134606465.svg">
-</p>
-
-# Metrics for object detection
-  
-The motivation of this project is the lack of consensus used by different works and implementations concerning the **evaluation metrics of the object detection problem**. Although on-line competitions use their own metrics to evaluate the task of object detection, just some of them offer reference code snippets to calculate the accuracy of the detected objects.  
-Researchers who want to evaluate their work using different datasets than those offered by the competitions, need to implement their own version of the metrics. Sometimes a wrong or different implementation can create different and biased results. Ideally, in order to have trustworthy benchmarking among different approaches, it is necessary to have a flexible implementation that can be used by everyone regardless the dataset used.  
-
-**This project provides easy-to-use functions implementing the same metrics used by the the most popular competitions of object detection**. Our implementation does not require modifications of your detection model to complicated input formats, avoiding conversions to XML or JSON files. We simplified the input data (ground truth bounding boxes and detected bounding boxes) and gathered in a single project the main metrics used by the academia and challenges. Our implementation was carefully compared against the official implementations and our results are exactly the same.   
-
-In the topics below you can find an overview of the most popular metrics used in different competitions and works, as well as samples showing how to use our code.
 
 ## Table of contents
 
@@ -25,10 +13,10 @@ In the topics below you can find an overview of the most popular metrics used in
 <a name="different-competitions-different-metrics"></a> 
 ## Different competitions, different metrics 
 
-* **[PASCAL VOC Challenge](http://host.robots.ox.ac.uk/pascal/VOC/)** offers a Matlab script in order to evaluate the quality of the detected objects. Participants of the competition can use the provided Matlab script to measure the accuracy of their detections before submitting their results. The official documentation explaining their criteria for object detection metrics can be accessed [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/htmldoc/devkit_doc.html#SECTION00050000000000000000). The current metrics used by the current PASCAL VOC object detection challenge are the **Precision x Recall curve** and **Average Precision**.  
-The PASCAL VOC Matlab evaluation code reads the ground truth bounding boxes from XML files, requiring changes in the code if you want to apply it to other datasets or to your speficic cases. Even though projects such as [Faster-RCNN](https://github.com/rbgirshick/py-faster-rcnn) implement PASCAL VOC evaluation metrics, it is also necessary to convert the detected bounding boxes into their specific format. [Tensorflow](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/evaluation_protocols.md) framework also has their PASCAL VOC metrics implementation.  
+* **[PASCAL VOC Challenge](http://host.robots.ox.ac.uk/pascal/VOC/)** : The official documentation explaining their criteria for object detection metrics can be accessed [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/htmldoc/devkit_doc.html#SECTION00050000000000000000). The current metrics used by the current PASCAL VOC object detection challenge are the **Precision x Recall curve** and **Average Precision**.  
 
-* **[COCO Detection Challenge](https://competitions.codalab.org/competitions/5181)** uses different metrics to evaluate the accuracy of object detection of different algorithms. [Here](http://cocodataset.org/#detection-eval) you can find a documentation explaining the 12 metrics used for characterizing the performance of an object detector on COCO. This competition offers Python and Matlab codes so users can verify their scores before submitting the results. It is also necessary to convert the results to a [format](http://cocodataset.org/#format-results) required by the competition.  
+* **[COCO Detection Challenge](https://competitions.codalab.org/competitions/5181)** uses different metrics to evaluate the accuracy of object detection of different algorithms. [Here](http://cocodataset.org/#detection-eval) you can find a documentation explaining the 12 metrics used for characterizing the performance of an object detector on COCO. This competition offers Python and Matlab codes so users can verify their scores before submitting the results. 
+## Put the image here//
 
 * **[Google Open Images Dataset V4 Competition](https://storage.googleapis.com/openimages/web/challenge.html)** also uses mean Average Precision (mAP) over the 500 classes to evaluate the object detection task. 
 
@@ -58,7 +46,7 @@ Some basic concepts used by the metrics:
 * **True Positive (TP)**: A correct detection. Detection with IOU ≥ _threshold_  
 * **False Positive (FP)**: A wrong detection. Detection with IOU < _threshold_  
 * **False Negative (FN)**: A ground truth not detected  
-* **True Negative (TN)**: Does not apply. It would represent a corrected misdetection. In the object detection task there are many possible bounding boxes that should not be detected within an image. Thus, TN would be all possible bounding boxes that were corrrectly not detected (so many possible boxes within an image). That's why it is not used by the metrics.
+* **True Negative (TN)**: Does not apply. It would represent a corrected misdetection. In the object detection task there are many possible bounding boxes that should not be detected within an image. Thus, TN would be all possible bounding boxes that were corrrectly not detected (_so many possible boxes within an image_). That's why it is not used by the metrics.
 
 _threshold_: depending on the metric, it is usually set to 50%, 75% or 95%.
 
@@ -72,7 +60,7 @@ Precision is the ability of a model to identify **only** the relevant objects. I
 
 ### Recall 
 
-Recall is the ability of a model to find all the relevant cases (all ground truth bounding boxes). It is the percentage of true positive detected among all relevant ground truths and is given by:
+Recall is the ability of a model to find all the relevant cases **(all ground truth bounding boxes)**. It is the percentage of true positive detected among all relevant ground truths and is given by:
 
 <p align="center"> 
 <img src="http://latex.codecogs.com/gif.latex?Recall%20%3D%20%5Cfrac%7BTP%7D%7BTP&plus;FN%7D%3D%5Cfrac%7BTP%7D%7B%5Ctext%7Ball%20ground%20truths%7D%7D">
@@ -84,7 +72,7 @@ In the topics below there are some comments on the most popular metrics used for
 
 ### Precision x Recall curve
 
-The Precision x Recall curve is a good way to evaluate the performance of an object detector as the confidence is changed. There is a curve for each object class. An object detector of a particular class is considered good if its prediction stays high as recall increases, which means that if you vary the confidence threshold, the precision and recall will still be high. Another way to identify a good object detector is to look for a detector that can identify only relevant objects (0 False Positives = high precision), finding all ground truth objects (0 False Negatives = high recall).  
+The Precision x Recall curve is a good way to evaluate the performance of an object detector as the confidence is changed. There is a curve for _each object class_. An object detector of a particular class is considered good if its **prediction stays high as recall increases**, which means that if you vary the confidence threshold, the precision and recall will still be high. This statement can be more intuitively understood by looking at the above eqautions of P and R and keeping in mind that **TP+FN = all ground truth = constant**, so Recall increases, means TP increased, hence FN will decrease. As TP has increased, only if FP decreases, will the Precision remain high i.e. the _model is doing less mistakes_ and hence is good.  Another way to identify a good object detector is to look for a detector that can identify only relevant objects (0 False Positives = high precision), finding all ground truth objects (0 False Negatives = high recall).  
 
 A poor object detector needs to increase the number of detected objects (increasing False Positives = lower precision) in order to retrieve all ground truth objects (high recall). That's why the Precision x Recall curve usually starts with high precision values, decreasing as recall increases. You can see an example of the Prevision x Recall curve in the next topic (Average Precision).  
 This kind of curve is used by the PASCAL VOC 2012 challenge and is available in our implementation.  
