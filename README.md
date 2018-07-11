@@ -74,8 +74,8 @@ In the topics below there are some comments on the most popular metrics used for
 
 The Precision x Recall curve is a good way to evaluate the performance of an object detector as the confidence is changed. There is a curve for _each object class_. An object detector of a particular class is considered good if its **prediction stays high as recall increases**, which means that if you vary the confidence threshold, the precision and recall will still be high. This statement can be more intuitively understood by looking at the above eqautions of P and R and keeping in mind that **TP+FN = all ground truth = constant**, so Recall increases, means TP increased, hence FN will decrease. As TP has increased, only if FP decreases, will the Precision remain high i.e. the _model is doing less mistakes_ and hence is good.  Another way to identify a good object detector is to look for a detector that can identify only relevant objects (0 False Positives = high precision), finding all ground truth objects (0 False Negatives = high recall).  
 
-A poor object detector needs to increase the number of detected objects (increasing False Positives = lower precision) in order to retrieve all ground truth objects (high recall). That's why the Precision x Recall curve usually starts with high precision values, decreasing as recall increases. You can see an example of the Prevision x Recall curve in the next topic (Average Precision).  
-This kind of curve is used by the PASCAL VOC 2012 challenge and is available in our implementation.  
+A poor object detector **needs to increase the number of detected objects** (increasing False Positives = lower precision) in order to retrieve all ground truth objects (high recall). That's why the Precision x Recall curve usually starts with high precision values, _decreasing_ as recall increases. You can see an example of the Prevision x Recall curve in the next topic (Average Precision).  
+This kind of curve is used by the PASCAL VOC 2012 challenge.  
 
 ### Average Precision
 
@@ -97,6 +97,7 @@ where ![](http://latex.codecogs.com/gif.latex?%5Crho%5Cleft%20%28%20%5Ctilde%7Br
 
 Instead of using the precision observed at each point, the AP is obtained by interpolating the precision at each level ![](http://latex.codecogs.com/gif.latex?r) taking the **maximum precision whose recall value is greater than ![](http://latex.codecogs.com/gif.latex?r)**.
 
+Note that only the predictions(the red boxes below) are marked as TP or FP.     
 #### An ilustrated example 
 
 An example helps us understand better the concept of the interpolated average precision. Consider the detections below:
@@ -107,7 +108,7 @@ An example helps us understand better the concept of the interpolated average pr
   
 There are 7 images with 15 ground truth objects representented by the green bounding boxes and 24 detected objects represented by the red bounding boxes. Each detected object has a confidence level and is identified by a letter (A,B,...,Y).  
 
-The following table shows the bounding boxes with their corresponding confidences. The last column identifies the detections as TP or FP. In this example a TP is considered if IOU ![](http://latex.codecogs.com/gif.latex?%5Cgeq) 30%, otherwise it is a FP. By looking at the images above we can roughly tell if the detections are TP or FP.
+The following table shows the bounding boxes with their corresponding confidences. The last column identifies the detections as TP or FP. In this example a **TP is considered** if IOU ![](http://latex.codecogs.com/gif.latex?%5Cgeq) 30%, **otherwise it is a FP**. By looking at the images above we can roughly tell if the detections are TP or FP.
 
 <!--- Table 1 --->
 <p align="center">
@@ -142,9 +143,10 @@ The following table shows the bounding boxes with their corresponding confidence
 | Image 7 |	Y	| 95% | FP |
 --->
 
-In some images there are more than one detection overlapping a ground truth (Images 2, 3, 4, 5, 6 and 7). For those cases the detection with the highest IOU is taken, discarding the other detections. This rule is applied by the PASCAL VOC 2012 metric: "e.g. 5 detections (TP) of a single object is counted as 1 correct detection and 4 false detections”.
+Note that, in some images there are **more than one detection overlapping a ground truth that are TP** (Images 2, 3, 4, 5, 6 and 7). For those cases the detection with the _highest IOU_ is taken, discarding the other detections. This rule is applied by the PASCAL VOC 2012 metric: "**e.g:** 5 detections (TP) of a single object is counted as 1 correct detection and 4 false detections”.
 
 The Precision x Recall curve is plotted by calculating the precision and recall values of the accumulated TP or FP detections. For this, first we need to order the detections by their confidences, then we calculate the precision and recall for each accumulated detection as shown in the table below: 
+**Note**: Total gt boxes = 15. So, recall will always be calculated as **(Acc TP)/15** in this case.
 
 <!--- Table 2 --->
 <p align="center">
@@ -186,7 +188,7 @@ The Precision x Recall curve is plotted by calculating the precision and recall 
 <img src="https://github.com/rafaelpadilla/Object-Detection-Metrics/blob/master/aux_images/precision_recall_example_1_v2.png" align="center"/>
 </p>
  
-As seen before, the idea of the interpolated average precision is to average the precisions at a set of 11 recall levels (0,0.1,...,1). The interpolated precision values are obtained by taking the maximum precision whose recall value is greater than its current recall value. We can visually obtain those values by looking at the recalls starting from the highest (0.4666) to 0 (looking at the plot from right to left) and, as we decrease the recall, we annotate the precision values that are the highest as shown in the image below:
+As seen before, the idea of the **interpolated average precision** is to average the precisions at a set of 11 recall levels (0,0.1,...,1). The interpolated precision values are obtained by taking the maximum precision whose recall value is greater than its current recall value. We can visually obtain those values by looking at the recalls starting from the highest (0.4666) to 0 (looking at the plot from right to left) and, as we decrease the recall, we annotate the precision values that are the highest as shown in the image below:
 
 <!--- interpolated precision curve --->
 <p align="center">
