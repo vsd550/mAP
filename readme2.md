@@ -168,6 +168,31 @@ This will save the detection results, i.e `bounding box` and `segmentation` dete
  Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.616
  Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.545
 ```
+
+Without patching the images, 
+```
+23.2 :mAP
+36.1 :plane
+21.2 :small-vehicle
+28.1 :ship
+232: 19.3 :storage-tank
+28.1 :large-vehicle
+6.7 :bridge
+~~~~ Summary metrics ~~~~
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.232
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.453
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.207
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.174
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.264
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.119
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.034
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.159
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.331
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.234
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.424
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.178
+
+```
 ## Supported Network modules     
 
 - Backbone:
